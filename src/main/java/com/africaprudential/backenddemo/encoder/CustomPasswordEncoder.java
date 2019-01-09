@@ -2,89 +2,37 @@ package com.africaprudential.backenddemo.encoder;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
-import java.security.spec.KeySpec;
-import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-/**
- *
- * @author Akinwale.Agbaje
- */
 public class CustomPasswordEncoder implements PasswordEncoder {
-    /**
-     * Checks if a string password is the same as the supplied encrypted password.
-     * @param passwordToCheck the password to check
-     * @param encryptedPassword the encrypted password
-     * @param salt the salt
-     * @return true, if both passwords are the same
-     * @throws NoSuchAlgorithmException
-     * @throws InvalidKeySpecException
-     */
-    public static boolean authenticate(String passwordToCheck, byte[] encryptedPassword, byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        byte[] encryptedPasswordToCheck = getEncryptedPassword(passwordToCheck, salt);
-        boolean same = Arrays.equals(encryptedPassword, encryptedPasswordToCheck);
-        return same;
-    }
-
-    /**
-     * Encrypts a password with a salt.
-     * @param password the password to encrypt
-     * @param salt the salt to encrypt the password with
-     * @return the encrypted password
-     * @throws NoSuchAlgorithmException
-     * @throws InvalidKeySpecException
-     */
-    public static byte[] getEncryptedPassword(String password, byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        String algorithm = "PBKDF2WithHmacSHA1";
-        int keyLength = 160;
-        int passwordIterations = 30000;
-
-        KeySpec keySpec = new PBEKeySpec(password.toCharArray(), salt, passwordIterations, keyLength);
-        SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(algorithm);
-
-        byte[] encryptedPassword = keyFactory.generateSecret(keySpec).getEncoded();
-
-        return encryptedPassword;
-    }
-
-    /**
-     * Generates the salt to be paired with a user's password.
-     * @return the password salt
-     * @throws NoSuchAlgorithmException
-     */
-    public static byte[] generateSalt() throws NoSuchAlgorithmException {
-        SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
-        byte[] salt = new byte[8];
-        random.nextBytes(salt);
-
-        return salt;
-    }
-
-    /**
-     * Validates the password to see if it fits with the organisation's password policy
-     * @param password the password to validate
-     * @param passwordPolicy the password policy to validate the password against
-     * @return true, if validation passes
-     */
-    public static boolean validatePassword(String password, String passwordPolicy) {
-        Pattern pattern = Pattern.compile(passwordPolicy);
-        Matcher matcher = pattern.matcher(password);
-        return matcher.matches();
-    }
 
     @Override
     public String encode(CharSequence charSequence) {
-        return null;
+        byte[] encodedPassword = new byte[0];
+        try {
+            byte[] salt = Password.generateSalt();
+            encodedPassword = Password.getEncryptedPassword(charSequence.toString(), salt);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (InvalidKeySpecException e) {
+            e.printStackTrace();
+        }
+        return new String(encodedPassword);
     }
 
     @Override
-    public boolean matches(String charSequence, String s) {
-        return validatePassword();
+    public boolean matches(CharSequence charSequence, String s) {
+        boolean matched = false;
+        try {
+            byte[] salt = Password.generateSalt();
+            matched = Password.authenticate(charSequence.toString(), s.getBytes(), salt);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (InvalidKeySpecException e) {
+            e.printStackTrace();
+        }
+        return matched;
     }
+
 }
