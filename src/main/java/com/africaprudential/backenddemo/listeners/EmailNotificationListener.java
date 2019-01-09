@@ -32,7 +32,7 @@ import java.security.SecureRandom;
  */
 @Component
 @Slf4j
-public class EmailRegistrationListener {    
+public class EmailNotificationListener {
 
     @Autowired
     private UserService userService;

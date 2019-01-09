@@ -25,7 +25,7 @@ import java.util.UUID;
  */
 @Component
 @Slf4j
-public class ForgotPasswordSmsListener {    
+public class SmsNotificationListener {
     
     @Autowired
     private UserService userService;
