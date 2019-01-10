@@ -6,21 +6,28 @@
 package com.africaprudential.backenddemo.event;
 
 import com.africaprudential.backenddemo.model.EmailNotification;
-import lombok.Getter;
-import org.springframework.context.ApplicationEvent;
 
 /**
  *
  * @author olanrewaju.ebenezer
  */
 
-public class EmailEvent extends ApplicationEvent {
+public class EmailEvent {
 
-    @Getter
-    private EmailNotification email;
+    private final EmailNotification email;
 
     public EmailEvent(EmailNotification email) {
-        super(email);
         this.email = email;
+    }
+
+    public EmailNotification getEmail() {
+        return email;
+    }
+
+    @Override
+    public String toString() {
+        return "EmailEvent{" +
+                "email=" + email +
+                '}';
     }
 }

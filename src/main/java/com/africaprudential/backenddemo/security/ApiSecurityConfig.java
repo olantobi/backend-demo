@@ -21,7 +21,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
  */
 @Configuration
 @EnableWebSecurity
-//@EnableWebFluxSecurity
 public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -29,6 +28,7 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+
         auth.authenticationProvider(customAuthenticationProvider);//.userDetailsService(userDetailsService);
     }
 
@@ -38,22 +38,22 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    /*
-    @Autowired
-    public void globalUserDetails(final AuthenticationManagerBuilder auth) throws Exception {// @formatter:off
-        auth.inMemoryAuthentication().withUser("sunnyben").password("123456").roles("ADMIN").and().withUser("olantobi")
-                .password("adetoberu").roles("SYSADMIN");
-    }
+
+//    @Autowired
+//    public void globalUserDetails(final AuthenticationManagerBuilder auth) throws Exception {// @formatter:off
+//        auth.inMemoryAuthentication().withUser("sunnyben").password("123456").roles("ADMIN").and().withUser("olantobi")
+//                .password("adetoberu").roles("SYSADMIN");
+//    }
 
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().withUser("olantobi").password("adetoberu").roles("SYSADMIN");
-        //auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
-        //auth.inMemoryAuthentication().withUser("john").password("123").roles("USER").and().withUser("tom")
-                //.password("111").roles("ADMIN");
-    }
-     */
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.inMemoryAuthentication().withUser("olantobi").password("adetoberu").roles("SYSADMIN");
+//        //auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+//        //auth.inMemoryAuthentication().withUser("john").password("123").roles("USER").and().withUser("tom")
+//                //.password("111").roles("ADMIN");
+//    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.antMatcher("/api.*").authorizeRequests().anyRequest().authenticated();

@@ -7,6 +7,7 @@ public class AppConstants {
         public static final String CLIENT_ID = "angular-client";
         public static final String CLIENT_SECRET = "9CB8662B93A95059DEBB66A64D113677";
         public static final String[] AUTH_SCOPES = {"read", "write", "admin"};
+        public static final String[] AUTHORITIES = {"ROLE_ADMIN", "ROLE_SUPERADMIN", "ROLE_USER"};
         public static final String[] GRANT_TYPES = {"password", "authorization_code", "refresh_token"};
     }
 

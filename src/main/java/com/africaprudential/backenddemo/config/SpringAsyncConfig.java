@@ -24,7 +24,7 @@ import java.util.concurrent.Executors;
 public class SpringAsyncConfig implements AsyncConfigurer {
     
     @Override
-    @Bean
+    @Bean("threadPoolTaskExecutor")
     public Executor getAsyncExecutor() {
         return Executors.newCachedThreadPool();
     }

@@ -6,7 +6,6 @@
 package com.africaprudential.backenddemo.listeners;
 
 import com.africaprudential.backenddemo.event.EmailEvent;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -16,10 +15,9 @@ import org.springframework.stereotype.Component;
  * @author olanrewaju.ebenezer
  */
 @Component
-@Slf4j
 public class EmailNotificationListener {
 
-    @Async
+    @Async("threadPoolTaskExecutor")
     @EventListener
     public void sendInvitationEmail(EmailEvent event) {
         System.out.println("Sending email event ..."+event.getEmail());
