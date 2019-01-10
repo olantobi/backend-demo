@@ -31,15 +31,17 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
  
     @Autowired
     private AccessControlService accessControlService;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
     
     @Override
     public Authentication authenticate(Authentication authentication)
       throws AuthenticationException {
+        System.out.println("Authentication is about to happen");
         String username = authentication.getName();
-        String password = authentication.getCredentials().toString();        
-        
+        String password = authentication.getCredentials().toString();
+        System.out.println("Calling find by username");
         User user = accessControlService.findByUsername(username);
         
         if(user == null) {
